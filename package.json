@@ -1,0 +1,31 @@
+{
+  "name": "wingserver",
+  "version": "1.0.0",
+  "description": "V1.0 for wing debugger's web service",
+  "main": "index.js",
+  "scripts": {
+    "build": "tsc",
+    "dev": "nodemon --exec tsx src/index.ts",
+    "serve": "node dist/index.ts"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "module",
+  "devDependencies": {
+    "@types/express": "^5.0.6",
+    "@types/node": "^25.5.0",
+    "@types/pg": "^8.18.0",
+    "express": "^5.2.1",
+    "prisma": "^7.5.0",
+    "tsx": "^4.21.0",
+    "typescript": "^5.9.3"
+  },
+  "dependencies": {
+    "@prisma/adapter-pg": "^7.5.0",
+    "@prisma/client": "^7.5.0",
+    "dotenv": "^17.3.1",
+    "nodemon": "^3.1.14",
+    "pg": "^8.20.0"
+  }
+}
