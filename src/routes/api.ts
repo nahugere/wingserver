@@ -2,16 +2,36 @@ import { Router, Request, Response } from 'express';
 import { prisma } from '../lib/prisma.js';
 import { randomBytes } from 'node:crypto';
 import { responseSchema } from '../services/constraints.js';
-import { forwardRequest } from '../services/devMachineLogic.js';
+import { forwardRequest, waitForResponse } from '../services/devMachineLogic.js';
 import DevConnections from '../services/devConnections.js';
 
 const apiRoute: Router = Router();
 
 apiRoute.get("/project/:name", async(req: Request, res: Response) => {
     const { name } = req.params;
-    await forwardRequest("Hello brother", DevConnections.getConnection(name.toString()))
-    res.send("data sent");
+    const { mid } = req.query;
+    const ws = DevConnections.getConnection(name.toString());
+    if (ws==null) {
+        res.send(responseSchema(404, "Project instance not found", []));
+    } else if (mid==null) {
+        res.send(responseSchema(404, "message id not included", []));
+    } else {
+        mid.toString();
+        const message: Map<string, any> = new Map<string, any>();
+        message.set(mid?.toString(), "<h1>hello</h1>");
+        console.log(message)
+        await forwardRequest(message, DevConnections.getConnection(name.toString()));
+        waitForResponse(mid.toString(), ws)
+        .then((result: any) => {
+            // TODO: Implement sending binary site data
+            result.split
+            res.send(`${result}`);
+        })
+        .catch((err) => res.send("error bruv"));
+    }
 })
+
+// TODO: Implement the ability to fetch static or media files from the pipeline
 
 apiRoute.get("/get/:id", async(req: Request, res: Response) => {
     const { id } = req.params;
