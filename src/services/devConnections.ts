@@ -1,9 +1,13 @@
 class DevConnections {
     
     private static connections = new Map<string, any>();
+    private static lookUpMap = new WeakMap<WebSocket, string>();
 
     static addConnection(projectId: string, ws: any) {
-        this.connections.set(projectId, ws);
+        if (this.getConnection(projectId)==null) {
+            this.connections.set(projectId, ws);
+            this.lookUpMap.set(ws, projectId);
+        }
     }
 
     static getAllConnections() {
@@ -14,8 +18,10 @@ class DevConnections {
         return this.connections.get(projectId);
     }
 
-    static removeConnection(projectId: string) {
+    static removeConnection(ws: any) {
+        var projectId = this.lookUpMap.get(ws) ?? "";
         this.connections.delete(projectId);
+        this.lookUpMap.delete(ws);
     }
 
     static hasConnection(projectId: string) {
