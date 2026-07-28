@@ -1,7 +1,7 @@
 import http from 'http';
 import { WebSocketServer } from 'ws';
 import DevConnections from './services/devConnections.js';
-import { initWS, wss } from './routes/skt.js';
+import { initWS, wss, iniVmWS } from './routes/skt.js';
 
 import cookieParser from 'cookie-parser';
 import express, { Application, Request, Response } from 'express';
@@ -11,6 +11,7 @@ import morgan from 'morgan';
 import { prisma } from './lib/prisma.js';
 import { forwardRequest, generateMid } from './services/devMachineLogic.js';
 import ResponseMap from './services/responseMap.js';
+import path from 'path';
 
 const port = process.env.PORT || 3000;
 
@@ -18,6 +19,7 @@ const app: Application = express();
 const server = http.createServer(app);
 
 initWS();
+iniVmWS();
 
 server.on("upgrade", async (req, socket, head) => {
     const url = req.url || "/";
@@ -67,7 +69,12 @@ app.use(cors());
 app.use(cookieParser());
 app.use(morgan("tiny"));
 app.use("/api", apiRoute);
+app.use(express.static(path.join(process.cwd(), 'public')));
 app.use(express.raw({ type: "*/*" }));
+
+app.get('/', (req: Request, res: Response) => {
+    res.send('Welcome to the mainpage!');
+});
 
 app.use( async (req: Request, res: Response) => {
     try {
@@ -85,10 +92,6 @@ app.use( async (req: Request, res: Response) => {
         res.status(404).send("Page Not Found")
     }
 })
-
-app.get('/', (req: Request, res: Response) => {
-    res.send('Welcome to the mainpage!');
-});
 
 server.listen(port, () => {
     console.log(`Server running on port: ${port}`)

@@ -3,7 +3,11 @@ import { WebSocketServer } from "ws";
 import ResponseMap from "../services/responseMap.js";
 import DevConnections from "../services/devConnections.js";
 
+const wsPort = 5432;
+
+export const vmWss = new WebSocketServer({port: wsPort});
 export const wss = new WebSocketServer({ noServer: true });
+
 export function initWS() {
     wss.on("connection", async (ws, req) => {
         console.log("Client connected");
@@ -15,7 +19,7 @@ export function initWS() {
             const metaBuffer = message.slice(4, 4 + metaLen);
             const meta = JSON.parse(metaBuffer.toString('utf-8'));
             
-            const data = message.slice(4 + metaLen)
+            var data = message.slice(4 + metaLen)
             
             const status = meta["status"];
 
@@ -31,19 +35,45 @@ export function initWS() {
                 return;
             }
 
-            res.write(data)
+            if (
+                meta.isLast &&
+                Object.values(meta.headers).some((v: any) => v.includes("text/html"))
+            ) {
+
+                console.log(meta.headers)
+                const html = data.toString("utf8");
+
+                const modified = html.replace(
+                    /<\/body>/i,
+                    `<script src="/scripts/ws-proxy.js"></script></body>`
+                );
+                res.write(Buffer.from(modified));
+            } else {
+                console.log(res.headersSent);
+                res.write(data)
+            }
             
             if (meta["isLast"]) {
                 res.end()
             }
-            // res.on("close", ()=>{
-            //     ResponseMap.removeResponses(meta["messageId"])
-            // })
         })
 
         ws.on("close", () => {
-            // TODO: Remove connection here
             DevConnections.removeConnection(ws);
+        })
+    })
+}
+
+export function iniVmWS() {
+    console.log(`Running VM Service on Port: ${wsPort}`)
+    vmWss.on("connection", async(ws, req) => {
+        
+        const rawUrl = req.url || '/';
+        DevConnections.addConnection(rawUrl, ws)
+        console.log("VM Service connected")
+
+        ws.on("message", (message: any) => {
+            
         })
     })
 }
