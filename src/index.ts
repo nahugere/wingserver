@@ -13,7 +13,7 @@ import { forwardRequest, generateMid } from './services/devMachineLogic.js';
 import ResponseMap from './services/responseMap.js';
 import path from 'path';
 
-const port = process.env.PORT || 3000;
+const port = process.env.PORT || 4000;
 
 const app: Application = express();
 const server = http.createServer(app);
@@ -39,28 +39,28 @@ server.on("upgrade", async (req, socket, head) => {
     //     return;
     // }
 
-    try {
+    // try {
         
-        // TODO: Implement caching here
-        const project = await prisma.project.findUnique({where: { project_id: projectId }});
+    //     // TODO: Implement caching here
+    //     const project = await prisma.project.findUnique({where: { project_id: projectId }});
         
-        if (!project) {
-            socket.write("HTTP/1.1 404 Project Not Found\r\n\r\n");
-            socket.destroy();
-            return;
-        }
+    //     if (!project) {
+    //         socket.write("HTTP/1.1 404 Project Not Found\r\n\r\n");
+    //         socket.destroy();
+    //         return;
+    //     }
 
         wss.handleUpgrade(req, socket, head, (ws) => {
             DevConnections.addConnection(projectId, ws);
             wss.emit("connection", ws, req);
         })
-    } catch (err) {
-        console.log(err);
+    // } catch (err) {
+    //     console.log(err);
 
-        socket.write("HTTP/1.1 500 Server Error\r\n\r\n");
-        socket.destroy();
-        return;
-    }
+    //     socket.write("HTTP/1.1 500 Server Error\r\n\r\n");
+    //     socket.destroy();
+    //     return;
+    // }
 
 });
 
@@ -81,6 +81,11 @@ app.use( async (req: Request, res: Response) => {
         const projectName = req.cookies['current_tunnel'];
         const path = req.path.toString().slice(1);
         const mid: string = generateMid();
+
+        if (path=="manifest.json") {
+            console.log("heree")
+        }
+        // ToDO: Fix duplicate request issue and manifest.json not loading
 
         ResponseMap.addConnection(mid, res)
         await forwardRequest(projectName, mid, path, DevConnections.getConnection(projectName.toString()), req, res);
