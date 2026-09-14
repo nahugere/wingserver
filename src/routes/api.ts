@@ -3,6 +3,7 @@ import { prisma } from '../lib/prisma.js';
 import { randomBytes } from 'node:crypto';
 import { responseSchema } from '../services/constraints.js';
 import { forwardRequest, generateMid } from '../services/devMachineLogic.js';
+import { pruneExpired, generateProjectId, generateSecret, SESSIONS } from '../services/sessionAuth.js';
 import DevConnections from '../services/devConnections.js';
 import ResponseMap from '../services/responseMap.js';
 
@@ -49,29 +50,43 @@ async function isUnique(id: string) {
     return project;
 }
 
-apiRoute.post("/create", async(req: Request, res: Response) => {
-    const { name } = req.body; 
-    var n = "";
+// apiRoute.post("/create", async(req: Request, res: Response) => {
+//     const { name } = req.body; 
+//     var n = "";
     
-    while(true) {
-        n = generateName(name);
-        if (isUnique(n)!=null) {
-            break;
-        }
-    }
+//     while(true) {
+//         n = generateName(name);
+//         if (await isUnique(n)!=null) {
+//             break;
+//         }
+//     }
 
-    const newProject = await prisma.project.create({
-        data: {
-            project_name: name,
-            project_id: n
-        }
-    })
+//     const newProject = await prisma.project.create({
+//         data: {
+//             project_name: name,
+//             project_id: n
+//         }
+//     })
 
-    if (newProject) {
-        res.send(responseSchema(200, "Success", {"project_id": n}));
-    } else {
-        res.send(responseSchema(500, "Error"));
-    }
+//     if (newProject) {
+//         res.send(responseSchema(200, "Success", {"project_id": n}));
+//     } else {
+//         res.send(responseSchema(500, "Error"));
+//     }
+// })
+
+apiRoute.post("/create", async(req: Request, res: Response) => {
+    pruneExpired();
+
+    const projectId = generateProjectId();
+    const secret = generateSecret();
+
+    SESSIONS.set(projectId, { secret, createdAt: Date.now() });
+
+    res.json({
+        statusCode: 200,
+        data: { project_id: projectId, secret },
+    });
 })
 
 export default apiRoute;

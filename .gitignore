@@ -66,3 +66,5 @@ coverage/
 # Misc
 # =========================
 *.pem
+
+CODE_REVIEW.md

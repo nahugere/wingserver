@@ -2,7 +2,7 @@ import http from 'http';
 import { WebSocketServer } from 'ws';
 import DevConnections from './services/devConnections.js';
 import { initWS, wss, iniVmWS } from './routes/skt.js';
-
+import {authenticateSocket} from './services/sessionAuth.js';
 import cookieParser from 'cookie-parser';
 import express, { Application, Request, Response } from 'express';
 import apiRoute from './routes/api.js';
@@ -13,7 +13,7 @@ import { forwardRequest, generateMid } from './services/devMachineLogic.js';
 import ResponseMap from './services/responseMap.js';
 import path from 'path';
 
-const port = process.env.PORT || 4000;
+const port = process.env.PORT || 3000;
 
 const app: Application = express();
 const server = http.createServer(app);
@@ -24,6 +24,7 @@ iniVmWS();
 server.on("upgrade", async (req, socket, head) => {
     const url = req.url || "/";
     const projectId = url.split("?")[0].slice(1);
+    const authHeader = req.headers["authorization"];
 
     // Project not provided in url
     if (!projectId) {
@@ -33,11 +34,19 @@ server.on("upgrade", async (req, socket, head) => {
     }
 
     // Project is already open
-    // if (DevConnections.getConnection(projectId)!=null) {
-    //     socket.write("HTTP/1.1 400 Bad Request\r\n\r\n");
-    //     socket.destroy();
-    //     return;
-    // }
+    if (DevConnections.getConnection(projectId)!=null) {
+        socket.write("HTTP/1.1 400 Bad Request\r\n\r\n");
+        socket.destroy();
+        return;
+    }
+    
+    // Authentication fail
+    if (!authenticateSocket(projectId, authHeader)) {
+        socket.write("HTTP/1.1 401 Unauthorized\r\n\r\n");
+        socket.destroy();
+        return;
+    }
+
 
     // try {
         
@@ -85,7 +94,7 @@ app.use( async (req: Request, res: Response) => {
         if (path=="manifest.json") {
             console.log("heree")
         }
-        // ToDO: Fix duplicate request issue and manifest.json not loading
+        // TODO: Fix duplicate request issue and manifest.json not loading
 
         ResponseMap.addConnection(mid, res)
         await forwardRequest(projectName, mid, path, DevConnections.getConnection(projectName.toString()), req, res);
