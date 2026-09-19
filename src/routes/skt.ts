@@ -16,47 +16,51 @@ export function initWS() {
 
         // TODO: Implement logic to remove unwanted register and devconnection instances on disconnect
         ws.on("message", (message: any) => {
-            const metaLen = message.readUInt32BE(0)
+            try {
+                const metaLen = message.readUInt32BE(0)
             
-            const metaBuffer = message.slice(4, 4 + metaLen);
-            const meta = JSON.parse(metaBuffer.toString('utf-8'));
-            
-            var data = message.slice(4 + metaLen)
-            
-            const status = meta["status"];
-            const projectId = meta["headers"]["Project-Id"]
+                const metaBuffer = message.slice(4, 4 + metaLen);
+                const meta = JSON.parse(metaBuffer.toString('utf-8'));
+                
+                var data = message.slice(4 + metaLen)
+                
+                const status = meta["status"];
+                const projectId = meta["headers"]["Project-Id"]
 
-            const res = ResponseMap.getResponse(meta["messageId"])
+                const res = ResponseMap.getResponse(meta["messageId"])
 
-            if (!res.headersSent) {
-                res.writeHeader(status, meta["headers"])
-            }
+                if (!res.headersSent) {
+                    res.writeHeader(status, meta["headers"])
+                }
 
-            if (status==304) {
-                res.status(304)
-                res.end()
-                return;
-            }
+                if (status==304) {
+                    res.status(304)
+                    res.end()
+                    return;
+                }
 
-            if (
-                meta.isLast &&
-                Object.values(meta.headers).some((v: any) => v.includes("text/html"))
-            ) {
+                if (
+                    meta.isLast &&
+                    Object.values(meta.headers).some((v: any) => v.includes("text/html"))
+                ) {
 
-                const html = data.toString("utf8");
+                    const html = data.toString("utf8");
 
-                const modified = html.replace(
-                    /<\/head>/i,
-                    `<head><script>window.__TUNNEL_PROJECT_ID__ = "${projectId}";</script>
-                    <script src="/scripts/ws-proxy.js"></script>`
-                );
-                res.write(Buffer.from(modified));
-            } else {
-                res.write(data)
-            }
-            
-            if (meta["isLast"]) {
-                res.end()
+                    const modified = html.replace(
+                        /<\/head>/i,
+                        `<head><script>window.__TUNNEL_PROJECT_ID__ = "${projectId}";</script>
+                        <script src="/scripts/ws-proxy.js"></script>`
+                    );
+                    res.write(Buffer.from(modified));
+                } else {
+                    res.write(data)
+                }
+                
+                if (meta["isLast"]) {
+                    res.end()
+                }
+            } catch (error) {
+                console.log(error)
             }
         })
 
@@ -82,20 +86,20 @@ export function iniVmWS() {
     vmWss.on("connection", async (ws, req) => {
         const role = req.headers["x-wing-role"];
         const rawUrl = req.url || '/';
+        const urls = rawUrl.split("/")
 
-        if (rawUrl === "/") {
+        if (rawUrl === "/" || urls.length<3) {
             ws.close(1014, "Bad Request")
             return
         }
 
-        const [, projectId, port, clientId, ...params] = rawUrl.split("/")
+        const [, projectId, port, clientId, ...params] = urls
         
         if (!vmSessions.has(projectId)) {
             vmSessions.set(projectId, new Map([
                 ["agent", null],
                 ["clients", {}]
             ]))
-            console.log(vmSessions)
         }
 
         addVmSession(ws, projectId, role, clientId)

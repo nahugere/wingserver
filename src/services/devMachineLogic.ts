@@ -27,7 +27,7 @@ export async function forwardRequest(name: any, mid: string, path: any, ws: WebS
     };
 
     const m = JSON.stringify(message);
-    ws.send(m);
+    if (ws.readyState === WebSocket.OPEN) ws.send(m);
 }
 
 export function generateMid(): string {

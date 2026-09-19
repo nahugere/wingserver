@@ -12,6 +12,7 @@ import { prisma } from './lib/prisma.js';
 import { forwardRequest, generateMid } from './services/devMachineLogic.js';
 import ResponseMap from './services/responseMap.js';
 import path from 'path';
+import siteRoute from './routes/site.js';
 
 const port = process.env.PORT || 3000;
 
@@ -78,12 +79,11 @@ app.use(cors());
 app.use(cookieParser());
 app.use(morgan("tiny"));
 app.use("/api", apiRoute);
+app.use("/", siteRoute);
+app.set("view engine", "ejs");
+app.set("views", path.join(process.cwd(), "views"));
 app.use(express.static(path.join(process.cwd(), 'public')));
 app.use(express.raw({ type: "*/*" }));
-
-app.get('/', (req: Request, res: Response) => {
-    res.send('Welcome to the mainpage!');
-});
 
 app.use( async (req: Request, res: Response) => {
     try {

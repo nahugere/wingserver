@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>WING | Debug Your App Locally From Anywhere</title>
+    <meta name="description" content="Wing tunnels your local development environment to a shareable link in real time. Debug your app locally from anywhere, instantly." />
+    <link rel="icon" href="WING.svg" type="image/svg+xml" />
+    <link rel="stylesheet" href="styles/style.css" />
+</head>
+<body>
+
+  <svg xmlns="http://www.w3.org/2000/svg" style="display:none" aria-hidden="true">
+    <symbol id="wing-logo" viewBox="0 0 859 152">
+      <path d="M189.2 5.39999H261.8C259.267 17.1333 256.533 28.7333 253.6 40.2C250.8 51.6667 247.933 63.2 245 74.8C242.067 86.4 239.267 98.1333 236.6 110C233.933 121.733 231.467 133.8 229.2 146.2H144.2L132 71.4C131.867 70.4667 131.467 69.7333 130.8 69.2C130.267 68.5333 129.533 68.1333 128.6 68C127.8 67.7333 126.933 67.7333 126 68C125.2 68.1333 124.467 68.4667 123.8 69C123.267 69.5333 122.867 70.3333 122.6 71.4L110.2 146.2H34.2001C32.4667 136.6 30.5334 127 28.4001 117.4C26.2667 107.667 23.9334 98 21.4001 88.4C19.0001 78.8 16.5334 69.2667 14 59.8C11.4667 50.3333 9.00005 41.0667 6.60005 32C4.20005 22.9333 2.00005 14.0667 4.95911e-05 5.39999H71.6001C72.0001 12.0667 72.5334 18.8667 73.2001 25.8C74.0001 32.6 74.8667 39.4667 75.8001 46.4C76.8667 53.2 78.0001 59.9333 79.2001 66.6C80.4001 73.2667 81.6001 79.7333 82.8001 86C83.4667 87.2 84.2667 88 85.2001 88.4C86.2667 88.6667 87.2667 88.8 88.2001 88.8C89.1334 88.6667 89.9334 88.4 90.6001 88C91.2667 87.6 91.6667 87.2 91.8 86.8L104 5.39999H157.8L169.8 86.4C169.933 86.8 170.333 87.2 171 87.6C171.667 88 172.467 88.3333 173.4 88.6C174.333 88.7333 175.333 88.7333 176.4 88.6C177.467 88.4667 178.467 88.1333 179.4 87.6C180.333 87.0667 181.067 86.2667 181.6 85.2C182.267 84 182.533 82.5333 182.4 80.8C183.867 67.7333 185.133 54.9333 186.2 42.4C187.267 29.8667 188.267 17.5333 189.2 5.39999ZM277.134 146.2C277.001 137.533 276.934 128.733 276.934 119.8C277.068 110.867 277.268 101.8 277.534 92.6C277.934 83.4 278.201 74.2 278.334 65C278.601 55.6667 278.734 46.3333 278.734 37C278.734 31.6667 278.734 26.4 278.734 21.2C278.734 15.8667 278.668 10.6 278.534 5.39999H349.734C349.201 18.2 348.868 30.7333 348.734 43C348.601 55.1333 348.534 67.0667 348.534 78.8C348.534 87.2 348.734 95.2667 349.134 103C349.534 110.733 350.001 118.2 350.534 125.4C351.068 132.467 351.534 139.4 351.934 146.2H277.134ZM486.164 5.39999H552.564C552.697 9.93333 552.564 14.5333 552.164 19.2C551.897 23.7333 551.431 28.3333 550.764 33C550.231 37.5333 549.631 42.2 548.964 47C548.431 51.6667 547.964 56.4667 547.564 61.4C547.164 66.3333 546.964 71.4 546.964 76.6C546.964 87.8 547.297 99.2 547.964 110.8C548.764 122.267 550.031 134.067 551.764 146.2H468.564L443.764 75.6C443.631 75.2 443.231 74.8667 442.564 74.6C441.897 74.3333 441.164 74.2 440.364 74.2C439.564 74.2 438.764 74.4 437.964 74.8C437.164 75.2 436.497 75.8667 435.964 76.8C435.431 77.6 435.164 78.7333 435.164 80.2C435.164 90.4667 435.297 101.333 435.564 112.8C435.964 124.133 436.631 135.267 437.564 146.2H367.964C367.964 137.533 368.164 128.733 368.564 119.8C369.097 110.733 369.697 101.6 370.364 92.4C371.031 83.0667 371.697 73.6667 372.364 64.2C373.031 54.7333 373.564 45.1333 373.964 35.4C374.364 25.5333 374.497 15.5333 374.364 5.39999H450.164L478.564 87.8C478.831 88.3333 479.231 88.8 479.764 89.2C480.297 89.4667 480.897 89.6667 481.564 89.8C482.364 89.8 483.097 89.6667 483.764 89.4C484.431 89.1333 484.964 88.6667 485.364 88C485.897 87.3333 486.164 86.4667 486.164 85.4V5.39999ZM671.889 -1.09673e-05C693.489 -1.09673e-05 711.622 2.53333 726.289 7.6C740.956 12.5333 752.489 19.4 760.889 28.2C769.289 37 774.756 47.1333 777.289 58.6L701.489 76C702.822 70.1333 702.489 65.2667 700.489 61.4C698.622 57.4 695.289 54.4 690.489 52.4C685.689 50.2667 679.422 49.2 671.689 49.2C664.222 49.2 658.222 50.2 653.689 52.2C649.289 54.0667 646.156 56.7333 644.289 60.2C642.422 63.6667 641.489 67.6 641.489 72C641.489 75.3333 642.156 78.4 643.489 81.2C644.822 83.8667 646.756 86.1333 649.289 88C651.956 89.7333 655.089 91.1333 658.689 92.2C662.289 93.1333 666.289 93.6 670.689 93.6C676.556 93.6 681.222 92.9333 684.689 91.6C688.289 90.2667 690.956 88.4 692.689 86C690.822 92.5333 688.689 99.4 686.289 106.6C684.022 113.667 681.689 120.867 679.289 128.2C677.022 135.4 674.822 142.533 672.689 149.6C669.756 150.133 666.956 150.533 664.289 150.8C661.622 151.067 658.356 151.2 654.489 151.2C644.889 151.2 636.289 150.2 628.689 148.2C621.089 146.2 614.356 143.467 608.489 140C602.756 136.4 597.822 132.267 593.689 127.6C589.556 122.8 586.089 117.533 583.289 111.8C580.489 105.933 578.222 99.8 576.489 93.4C574.889 87 573.756 80.4667 573.089 73.8C572.689 68.4667 572.689 63.2 573.089 58C573.489 52.8 574.556 47.8 576.289 43C578.022 38.2 580.489 33.6667 583.689 29.4C586.889 25 591.022 21 596.089 17.4C601.156 13.8 607.222 10.7333 614.289 8.19999C621.356 5.53333 629.622 3.53333 639.089 2.2C648.689 0.733325 659.622 -1.09673e-05 671.889 -1.09673e-05ZM699.089 146.2C699.089 138.867 699.089 131.667 699.089 124.6C699.089 117.4 699.089 110.467 699.089 103.8C699.089 97 699.089 90.6 699.089 84.6C706.956 85.4 715.089 86.2 723.489 87C732.022 87.6667 740.689 88.2667 749.489 88.8C758.289 89.2 767.089 89.4667 775.889 89.6V146.2H699.089ZM795.103 146.2V99.6H858.303V146.2H795.103Z" fill="#f5f5f5" />
+    </symbol>
+  </svg>
+
+  <div class="corner corner-tl" aria-hidden="true"></div>
+  <div class="corner corner-tr" aria-hidden="true"></div>
+  <div class="corner corner-bl" aria-hidden="true"></div>
+  <div class="corner corner-br" aria-hidden="true"></div>
+
+  <header class="navbar">
+    <nav class="container nav" aria-label="Primary">
+      <a class="nav-logo" href="#hero" aria-label="WING. home">
+        <svg role="img" aria-label="WING." viewBox="0 0 859 152"><use href="#wing-logo" /></svg>
+      </a>
+      <div class="nav-links">
+        <a class="nav-link" href="#docs">Documentation</a>
+        <a class="nav-link" href="#hero">Get Started</a>
+      </div>
+    </nav>
+  </header>
+
+  <main>
+    <section class="hero" id="hero">
+      <div class="container hero-grid">
+        <div class="hero-left">
+          <h1>Debug Your App Locally From Anywhere. Instantly</h1>
+          <p class="hero-support">Support for macOS, Linux, and Windows</p>
+        </div>
+        <div class="hero-right">
+          <p class="hero-desc">Wing tunnels your local development environment to a shareable link with no deployment all in real time, straight from your machine.</p>
+          <div class="command-box">
+            <span class="prompt" aria-hidden="true">$</span>
+            <code>curl -fsSL https://example.com/install | sh</code>
+            <div class="copy-btn" role="button" tabindex="0" aria-label="Copy command">
+              <svg class="icon-copy" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><rect x="9" y="9" width="11" height="11" rx="2" /><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1" /></svg>
+              <svg class="icon-check" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="m20 6-11 11-5-5" /></svg>
+            </div>
+          </div>
+          <a class="github-btn" href="#">
+            <svg class="github-icon" viewBox="0 0 16 16" fill="currentColor" aria-hidden="true"><path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27s1.36.09 2 .27c1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.01 8.01 0 0 0 16 8c0-4.42-3.58-8-8-8z" /></svg>
+            Check it out on GitHub
+          </a>
+        </div>
+      </div>
+      <div class="scroll-indicator" aria-hidden="true">
+        <span>SCROLL</span>
+        <span class="scroll-line"></span>
+      </div>
+    </section>
+
+    <!-- How It Works -->
+    <section class="how" id="how">
+      <div class="container">
+        <h2>How It Works.</h2>
+        <p class="how-desc">Wing works in the background so you don't have to think about it. Run one command, get a link, share it. Your app stays on your machine, wing just makes it accessible to everyone else.</p>
+
+        <div class="cards">
+          <article class="card">
+            <div class="card-top">
+              <h3>Run</h3>
+              <span class="card-icon" aria-hidden="true">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M8 5.5v13l11-6.5z" /></svg>
+              </span>
+            </div>
+            <p>Wing starts a tunnel from your local server to our relay. One command and you're done.</p>
+          </article>
+
+          <article class="card">
+            <div class="card-top">
+              <h3>Share</h3>
+              <span class="card-icon" aria-hidden="true">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="12" cy="12" r="9" /><path d="M3.5 12h17M12 3a14.5 14.5 0 0 1 0 18M12 3a14.5 14.5 0 0 0 0 18" /></svg>
+              </span>
+            </div>
+            <p>Wing generates a unique link tied to your session. Share the link wherever you communicate.</p>
+          </article>
+
+          <article class="card">
+            <div class="card-top">
+              <h3>Preview</h3>
+              <span class="card-icon" aria-hidden="true">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="m9 7-5 5 5 5M15 7l5 5-5 5" /></svg>
+              </span>
+            </div>
+            <p>No account needed, no install required. Whoever has the link opens it in their browser and sees your app running live.</p>
+          </article>
+
+          <article class="card">
+            <div class="card-top">
+              <h3>Debug</h3>
+              <span class="card-icon" aria-hidden="true">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="12" cy="13" r="4.5" /><circle cx="12" cy="6.5" r="2" /><path d="M10.5 5.2 8 2.8M13.5 5.2 16 2.8M7.5 10.5l-3.2-2M7.5 15.5l-3.2 2M16.5 10.5l3.2-2M16.5 15.5l3.2 2" /></svg>
+              </span>
+            </div>
+            <p>Make a change, save the file. It reflects on their end instantly. Real collaboration, zero friction.</p>
+          </article>
+        </div>
+
+        <div class="demo-link-wrap">
+          <a class="demo-link" href="#how">
+            <svg class="demo-dot" viewBox="0 0 10 10" aria-hidden="true"><circle cx="5" cy="5" r="4.2" fill="none" stroke="currentColor" stroke-width="1" /><circle cx="5" cy="5" r="1.4" fill="currentColor" /></svg>
+            Watch Live Demo
+          </a>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- Footer -->
+  <footer class="footer">
+    <div class="container footer-grid">
+      <div class="footer-left">
+        <svg class="footer-logo" role="img" aria-label="WING." viewBox="0 0 859 152"><use href="#wing-logo" /></svg>
+        <p class="footer-made">Made with ♡ by Nahu Gere</p>
+      </div>
+      <div class="footer-right">
+        <div class="footer-cols">
+          <div class="footer-col" id="docs">
+            <h4>Links</h4>
+            <a href="#docs">Documentation</a>
+            <a href="#how">How It Works</a>
+            <a href="#hero">Get Started</a>
+          </div>
+          <div class="footer-col">
+            <h4>Contact</h4>
+            <a href="#">Link Item</a>
+            <a href="#">Link Item</a>
+            <a href="#">Link Item</a>
+          </div>
+        </div>
+        <div class="footer-social">
+          <a href="#">LinkedIn</a>
+          <a href="#">Github</a>
+          <a href="#">X (Twitter)</a>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <script src="scripts/script.js"></script>
+</body>
+</html>
