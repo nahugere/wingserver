@@ -2,30 +2,9 @@ import { Router, Request, Response } from 'express';
 import { prisma } from '../lib/prisma.js';
 import { randomBytes } from 'node:crypto';
 import { responseSchema } from '../services/constraints.js';
-import { forwardRequest, generateMid } from '../services/devMachineLogic.js';
 import { pruneExpired, generateProjectId, generateSecret, SESSIONS } from '../services/sessionAuth.js';
-import DevConnections from '../services/devConnections.js';
-import ResponseMap from '../services/responseMap.js';
 
 const apiRoute: Router = Router();
-
-apiRoute.all("/project/:name/{*path}", async(req: Request, res: Response) => {
-    const { name, path } = req.params;
-    const mid: string = generateMid();
-    const ws = DevConnections.getConnection(name.toString());
-    console.error(ResponseMap.getAllResponses())
-    if (ws==null) {
-        res.send(responseSchema(404, "Project instance not found", []));
-    } else {
-        ResponseMap.addConnection(mid, res)
-        await forwardRequest(name, mid, path, ws, req, res);
-        res.on("close", () => {
-            ResponseMap.removeResponses(mid);
-        })
-    }
-})
-
-// TODO: Implement forwarding for other http protocols
 
 apiRoute.get("/get/:id", async(req: Request, res: Response) => {
     const { id } = req.params;

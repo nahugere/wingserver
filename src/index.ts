@@ -14,7 +14,7 @@ import ResponseMap from './services/responseMap.js';
 import path from 'path';
 import siteRoute from './routes/site.js';
 
-const port = process.env.PORT || 3000;
+const port = process.env.PORT || 8000;
 
 const app: Application = express();
 const server = http.createServer(app);
@@ -47,7 +47,6 @@ server.on("upgrade", async (req, socket, head) => {
         socket.destroy();
         return;
     }
-
 
     // try {
         
