@@ -4,7 +4,7 @@ import ResponseMap from "../services/responseMap.js";
 import DevConnections from "../services/devConnections.js";
 import { stringify } from "querystring";
 
-const wsPort = 5432;
+const wsPort: number = 21321;
 var vmSessions: Map<string, any> = new Map();
 
 export const vmWss = new WebSocketServer({port: wsPort});

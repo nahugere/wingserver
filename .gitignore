@@ -52,12 +52,6 @@ generated/
 .prisma/
 
 # =========================
-# TypeScript
-# =========================
-*.js
-*.js.map
-
-# =========================
 # Testing (if you add later)
 # =========================
 coverage/
