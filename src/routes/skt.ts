@@ -14,7 +14,6 @@ export function initWS() {
     wss.on("connection", async (ws, req) => {
         console.log("Client connected");
 
-        // TODO: Implement logic to remove unwanted register and devconnection instances on disconnect
         ws.on("message", (message: any) => {
             try {
                 const metaLen = message.readUInt32BE(0)
@@ -25,22 +24,19 @@ export function initWS() {
                 var data = message.slice(4 + metaLen)
                 
                 const status = meta["status"];
-                const projectId = meta["headers"]["Project-Id"]
 
                 const res = ResponseMap.getResponse(meta["messageId"])
 
-                if (!res.headersSent) {
-                    res.writeHeader(status, meta["headers"])
-                }
-
                 if (status==304) {
-                    res.status(304)
-                    res.end()
+                    res?.end()
                     return;
+                }
+                
+                if (!res?.headersSent) {
+                    res?.writeHead(status, meta["headers"])
                 }
 
                 if (
-                    meta.isLast &&
                     Object.values(meta.headers).some((v: any) => v.includes("text/html"))
                 ) {
 
@@ -48,16 +44,16 @@ export function initWS() {
 
                     const modified = html.replace(
                         /<\/head>/i,
-                        `<head><script>window.__TUNNEL_PROJECT_ID__ = "${projectId}";</script>
+                        `<head><script>window.__</script>
                         <script src="/scripts/ws-proxy.js"></script>`
                     );
-                    res.write(Buffer.from(modified));
+                    res?.write(Buffer.from(modified));
                 } else {
-                    res.write(data)
+                    res?.write(data);
                 }
                 
                 if (meta["isLast"]) {
-                    res.end()
+                    res?.end()
                 }
             } catch (error) {
                 console.log(error)
@@ -70,14 +66,25 @@ export function initWS() {
     })
 }
 
-function addVmSession(ws: any, projId: any, role: any, clientId: any = null) {
+function addVmSession(ws: any, projId: any, role: any, clientId: any = null, params: any, port: any, ) {
     var x = vmSessions.get(projId);
 
     if (role === "agent") {
-        x.set("agent", ws)
-    } else {
-        x.get("clients")[clientId] = ws
+        x.set("agent", ws);
+        return;
     }
+    
+    x.get("clients")[clientId] = ws;
+    const agent = x.get("agent");
+    
+    agent?.send(JSON.stringify({
+        port,
+        clientId,
+        params,
+        "isBinary": false,
+        "sendMessage": false,
+        "message": ""
+    }))
 }
 
 export function iniVmWS() {
@@ -88,7 +95,7 @@ export function iniVmWS() {
         const rawUrl = req.url || '/';
         const urls = rawUrl.split("/")
 
-        if (rawUrl === "/" || urls.length<3) {
+        if (rawUrl === "/") {
             ws.close(1014, "Bad Request")
             return
         }
@@ -102,7 +109,7 @@ export function iniVmWS() {
             ]))
         }
 
-        addVmSession(ws, projectId, role, clientId)
+        addVmSession(ws, projectId, role, clientId, params, port)
         const session = vmSessions.get(projectId)
 
         ws.on("message", (message: any, isBinary: boolean) => {
@@ -113,14 +120,23 @@ export function iniVmWS() {
                     : parsed.message
                 session.get("clients")[parsed.clientId].send(data, { binary: parsed.isBinary })
             } else {
-                session.get("agent").send(JSON.stringify({ 
-                    port, 
-                    clientId, 
-                    params,
-                    isBinary, 
-                    message: isBinary ? message : message.toString('utf-8')
-                }))
+                var agent = session.get("agent");
+                if (agent !== null) {
+                    var sendMessage = true;
+                    agent.send(JSON.stringify({ 
+                        port, 
+                        clientId, 
+                        params,
+                        isBinary, 
+                        sendMessage,
+                        message: isBinary ? message : message.toString('utf-8')
+                    }))
+                }
             }
+        })
+
+        ws.on("close", (code: any, reason: any) => {
+            return;
         })
     })
     

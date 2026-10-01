@@ -1,8 +1,8 @@
 (function() {
     const OriginalWebSocket = window.WebSocket;
     const TUNNEL_HOST = location.hostname;
-    const TUNNEL_PORT = 5432;
-    const PROJECT_ID = window.__TUNNEL_PROJECT_ID__;
+    const TUNNEL_PORT = 21321;
+    const PROJECT_ID = window.location.pathname.match(/^\/tunnel\/([^/]+)(\/.*)?$/)[1];
     const ORIGIN_PORT = location.port; 
 
     window.WebSocket = function(url, protocols) {

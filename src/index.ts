@@ -73,7 +73,7 @@ server.on("upgrade", async (req, socket, head) => {
 
 });
 
-app.use(express.json());
+app.use(express.raw({ type: "*/*" }));
 app.use(cors());
 app.use(cookieParser());
 app.use(morgan("tiny"));
