@@ -44,7 +44,7 @@ export function initWS() {
 
                     const modified = html.replace(
                         /<\/head>/i,
-                        `<head><script>window.__</script>
+                        `<head>
                         <script src="/scripts/ws-proxy.js"></script>`
                     );
                     res?.write(Buffer.from(modified));
