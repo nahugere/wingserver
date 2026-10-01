@@ -4,9 +4,9 @@
   "description": "V1.0 for wing debugger's web service",
   "main": "index.js",
   "scripts": {
-    "build": "tsc",
+    "build": "npx prisma generate && tsc",
     "dev": "nodemon --exec tsx src/index.ts",
-    "start": "node dist/src/index.ts"
+    "start": "node dist/src/index.js"
   },
   "keywords": [],
   "author": "",
