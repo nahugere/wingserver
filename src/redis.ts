@@ -5,7 +5,6 @@ if (!process.env.REDIS_URL) {
 }
 
 export const redis = new Redis(process.env.REDIS_URL);
-export const redisSubscriber = new Redis(process.env.REDIS_URL);
 
 export const redisVmSession = "wing:sessions:001"
 

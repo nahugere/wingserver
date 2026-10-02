@@ -3,16 +3,40 @@ import { WebSocketServer } from "ws";
 import ResponseMap from "../services/responseMap.js";
 import DevConnections from "../services/devConnections.js";
 import { stringify } from "querystring";
-import {redis, redisSubscriber} from '../redis.js';
 
-const wsPort: number = 21321;
 var vmSessions: Map<string, any> = new Map();
 
-export const vmWss = new WebSocketServer({port: wsPort});
+function addVmSession(ws: any, projId: any, role: any, clientId: any = null, params: any, port: any, ) {
+    var x = vmSessions.get(projId);
+
+    if (role === "agent") {
+        x.set("agent", ws);
+        return;
+    }
+    
+    x.get("clients")[clientId] = ws;
+    const agent = x.get("agent");
+    
+    agent?.send(JSON.stringify({
+        port,
+        clientId,
+        params,
+        "isBinary": false,
+        "sendMessage": false,
+        "message": ""
+    }))
+}
+
+export const vmWss = new WebSocketServer({ noServer: true });
 export const wss = new WebSocketServer({ noServer: true });
+export const wsRoutes: Record<string, WebSocketServer> = {
+    "ws": wss,
+    "vmws": vmWss
+};
 
 export function initWS() {
     wss.on("connection", async (ws, req) => {
+
         console.log("Client connected");
 
         ws.on("message", (message: any) => {
@@ -67,29 +91,8 @@ export function initWS() {
     })
 }
 
-function addVmSession(ws: any, projId: any, role: any, clientId: any = null, params: any, port: any, ) {
-    var x = vmSessions.get(projId);
-
-    if (role === "agent") {
-        x.set("agent", ws);
-        return;
-    }
-    
-    x.get("clients")[clientId] = ws;
-    const agent = x.get("agent");
-    
-    agent?.send(JSON.stringify({
-        port,
-        clientId,
-        params,
-        "isBinary": false,
-        "sendMessage": false,
-        "message": ""
-    }))
-}
-
 export function iniVmWS() {
-    console.log(`Running VM Service on Port: ${wsPort}`)
+    console.log(`Running WS Service`)
 
     vmWss.on("connection", async (ws, req) => {
         const role = req.headers["x-wing-role"];
