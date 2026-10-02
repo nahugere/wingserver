@@ -48,7 +48,7 @@ server.on("upgrade", async (req, socket, head) => {
         socket.destroy();
         return;
     }
-    
+
     // Authentication fail
     const authSoc = await authenticateSocket(projectId, authHeader)
     if (!authSoc) {
@@ -59,7 +59,7 @@ server.on("upgrade", async (req, socket, head) => {
 
     try {
         wsRoutes[route].handleUpgrade(req, socket, head, (ws) => {
-            DevConnections.addConnection(projectId, ws);
+            if(route=="ws") DevConnections.addConnection(projectId, ws);
             wsRoutes[route].emit("connection", ws, req);
         })
     } catch (err) {
