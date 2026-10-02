@@ -1,27 +1,25 @@
 import crypto from "crypto";
+import { getSession, deleteSession, getAllSessions } from '../redis.js';
 
-interface SessionAuth {
-    secret: string;
-    createdAt: number;
-}
-
-export const SESSIONS = new Map<string, SessionAuth>();
 export const SESSION_TTL_MS = 6 * 60 * 60 * 1000;
 
-export function pruneExpired(): void {
+export async function pruneExpired(): Promise<void> {
     const now = Date.now();
-    for (const [projectId, session] of SESSIONS) {
+    const sessions = await getAllSessions();
+    for (const [projectId, session] of Object.entries(sessions)) {
         if (now - session.createdAt > SESSION_TTL_MS) {
-            SESSIONS.delete(projectId);
+            await deleteSession(projectId);
         }
     }
 }
-export function authenticateSocket(projectId: string, authHeader: string | undefined): boolean {
-    const session = SESSIONS.get(projectId);
+
+export async function authenticateSocket(projectId: string, authHeader: string | undefined): Promise<boolean> {
+    const session = await getSession(projectId);
+
     if (!session) return false;
 
     if (Date.now() - session.createdAt > SESSION_TTL_MS) {
-        SESSIONS.delete(projectId);
+        await deleteSession(projectId);
         return false;
     }
 
@@ -35,10 +33,11 @@ export function authenticateSocket(projectId: string, authHeader: string | undef
 
     return crypto.timingSafeEqual(providedBuf, secretBuf);
 }
+
 export function generateProjectId(): string {
     return crypto.randomBytes(6).toString("base64url");
 }
+
 export function generateSecret(): string {
     return crypto.randomBytes(32).toString("base64url");
 }
-export default SessionAuth

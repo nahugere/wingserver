@@ -42,34 +42,25 @@ server.on("upgrade", async (req, socket, head) => {
     }
     
     // Authentication fail
-    if (!authenticateSocket(projectId, authHeader)) {
+    const authSoc = await authenticateSocket(projectId, authHeader)
+    if (!authSoc) {
         socket.write("HTTP/1.1 401 Unauthorized\r\n\r\n");
         socket.destroy();
         return;
     }
 
-    // try {
-        
-    //     // TODO: Implement caching here
-    //     const project = await prisma.project.findUnique({where: { project_id: projectId }});
-        
-    //     if (!project) {
-    //         socket.write("HTTP/1.1 404 Project Not Found\r\n\r\n");
-    //         socket.destroy();
-    //         return;
-    //     }
-
+    try {
         wss.handleUpgrade(req, socket, head, (ws) => {
             DevConnections.addConnection(projectId, ws);
             wss.emit("connection", ws, req);
         })
-    // } catch (err) {
-    //     console.log(err);
+    } catch (err) {
+        console.log(err);
 
-    //     socket.write("HTTP/1.1 500 Server Error\r\n\r\n");
-    //     socket.destroy();
-    //     return;
-    // }
+        socket.write("HTTP/1.1 500 Server Error\r\n\r\n");
+        socket.destroy();
+        return;
+    }
 
 });
 
@@ -106,8 +97,10 @@ app.use( async (req: Request, res: Response) => {
     }
 })
 
-// server.listen(port, () => {
-//     console.log(`Server running on port: ${port}`)
-// })
+if (process.env.DEBUG) {
+    server.listen(port, () => {
+        console.log(`Server running on port: ${port}`)
+    })
+}
 
 export default server;

@@ -3,6 +3,7 @@ import { WebSocketServer } from "ws";
 import ResponseMap from "../services/responseMap.js";
 import DevConnections from "../services/devConnections.js";
 import { stringify } from "querystring";
+import {redis, redisSubscriber} from '../redis.js';
 
 const wsPort: number = 21321;
 var vmSessions: Map<string, any> = new Map();
