@@ -1,7 +1,8 @@
 // TODO: Implement Redis Pub/Sub for better communication with workers
-import { WebSocketServer } from "ws";
+import { WebSocketServer, WebSocket } from "ws";
 import ResponseMap from "../services/responseMap.js";
 import DevConnections from "../services/devConnections.js";
+import type { Response } from "express";
 import { stringify } from "querystring";
 
 var vmSessions: Map<string, any> = new Map();
@@ -34,6 +35,25 @@ export const wsRoutes: Record<string, WebSocketServer> = {
     "vmws": vmWss
 };
 
+function writeWithBackpressure(ws: WebSocket, res: Response, data: Buffer) {
+    // if (res.writableEnded || res.destroyed) return;
+
+    // var ok = res.write(data);
+    // if (ok) return;
+
+    // ws.pause()
+    // const release = () => {
+    //     res.off("drain", release);
+    //     res.off("close", release);
+    //     ws.resume()
+    // }
+    // res.once("drain", release);
+    // res.once("close", release);
+    // if (res.writableEnded || res.destroyed) return;
+    res.write(data);
+    // if (res.writableLength > 64 * 1024 * 1024) res.destroy();  
+}
+
 export function initWS() {
     wss.on("connection", async (ws, req) => {
 
@@ -51,14 +71,16 @@ export function initWS() {
                 const status = meta["status"];
 
                 const res = ResponseMap.getResponse(meta["messageId"])
+                
+                if (res==null) return;
 
                 if (status==304) {
-                    res?.end()
+                    res.end()
                     return;
                 }
                 
-                if (!res?.headersSent) {
-                    res?.writeHead(status, meta["headers"])
+                if (!res.headersSent) {
+                    res.writeHead(status, meta["headers"])
                 }
 
                 if (
@@ -68,20 +90,21 @@ export function initWS() {
                     const html = data.toString("utf8");
 
                     const modified = html.replace(
-                        /<\/head>/i,
-                        `<head>
-                        <script src="/scripts/ws-proxy.js"></script>`
+                        /<head(\s[^>]*)?>/i,
+                        (m: any) => `${m}<script>window.$dwdsSseHandler='ws://localhost:65026/$dwdsSseHandler'</script><script src="/scripts/ws-proxy.js"></script>`
                     );
-                    res?.write(Buffer.from(modified));
+                    // res.write(data);
+                    writeWithBackpressure(ws, res, Buffer.from(modified));
                 } else {
-                    res?.write(data);
+                    // res.write(data);
+                    writeWithBackpressure(ws, res, data);
                 }
                 
                 if (meta["isLast"]) {
                     res?.end()
                 }
             } catch (error) {
-                console.log(error)
+                DevConnections.removeConnection(ws);
             }
         })
 
@@ -97,7 +120,7 @@ export function iniVmWS() {
     vmWss.on("connection", async (ws, req) => {
         const role = req.headers["x-wing-role"];
         const rawUrl = req.url || '/';
-        const urls = rawUrl.split("/")
+        const urls = rawUrl.split("/").slice(1)
 
         if (rawUrl === "/") {
             ws.close(1014, "Bad Request")
@@ -133,14 +156,21 @@ export function iniVmWS() {
                         params,
                         isBinary, 
                         sendMessage,
-                        message: isBinary ? message : message.toString('utf-8')
+                        message: isBinary ? message.toString('base64') : message.toString('utf-8')
                     }))
                 }
             }
         })
 
         ws.on("close", (code: any, reason: any) => {
-            return;
+            if (role === "agent") {
+                vmSessions.delete(projectId)
+                return
+            }
+            const clientsList = session.get("clients")
+            if (clientsList) {
+                delete clientsList[clientId]
+            }
         })
     })
     

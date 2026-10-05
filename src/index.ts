@@ -26,14 +26,15 @@ server.on("upgrade", async (req, socket, head) => {
     const url = req.url || "/";
     const params = url.split("/").slice(1)
     const route = params[0]
-    const projectId = params[1].split("?")[0].slice(0);
-    const authHeader = req.headers["authorization"];
     
-    // Route doesn't exist
-    if (!route) {
+    // Route doesn't exist or improper url
+    if (!route || params.length<2) {
         socket.destroy();
         return;
     }
+
+    const projectId = params[1].split("?")[0].slice(0);
+    const authHeader = req.headers["authorization"];
 
     // Project not provided in url
     if (!projectId) {
@@ -42,20 +43,28 @@ server.on("upgrade", async (req, socket, head) => {
         return;
     }
 
-    // Project is already open
-    if (DevConnections.getConnection(projectId)!=null) {
-        socket.write("HTTP/1.1 400 Bad Request\r\n\r\n");
-        socket.destroy();
-        return;
+    switch (route) {
+        case "ws":
+            // Project is already open
+            if (DevConnections.getConnection(projectId)!=null) {
+                socket.write("HTTP/1.1 400 Bad Request\r\n\r\n");
+                socket.destroy();
+                return;
+            }
+        
+            // Authentication fail
+            const authSoc = await authenticateSocket(projectId, authHeader)
+            if (!authSoc) {
+                socket.write("HTTP/1.1 401 Unauthorized\r\n\r\n");
+                socket.destroy();
+                return;
+            }
+
+            break;
+        default:
+            break;
     }
 
-    // Authentication fail
-    const authSoc = await authenticateSocket(projectId, authHeader)
-    if (!authSoc) {
-        socket.write("HTTP/1.1 401 Unauthorized\r\n\r\n");
-        socket.destroy();
-        return;
-    }
 
     try {
         wsRoutes[route].handleUpgrade(req, socket, head, (ws) => {
@@ -84,16 +93,16 @@ app.use(express.static(path.join(process.cwd(), 'public')));
 app.use(express.raw({ type: "*/*" }));
 
 app.use( async (req: Request, res: Response) => {
+    const projectName = req.cookies['current_tunnel'];
+    const path = req.path.toString().slice(1);
+    const mid: string = generateMid();
+    
     try {
-        const projectName = req.cookies['current_tunnel'];
-        const path = req.path.toString().slice(1);
-        const mid: string = generateMid();
 
         if (path=="manifest.json") {
             console.log("heree")
         }
-        // TODO: Fix duplicate request issue and manifest.json not loading
-
+        
         ResponseMap.addConnection(mid, res)
         await forwardRequest(projectName, mid, path, DevConnections.getConnection(projectName.toString()), req, res);
 
@@ -102,6 +111,10 @@ app.use( async (req: Request, res: Response) => {
         })
     } catch (e) {
         res.status(404).send("Page Not Found")
+    } finally {
+        res.on("close", () => {
+            ResponseMap.removeResponses(mid)
+        })
     }
 })
 

@@ -8,7 +8,7 @@
         let parsedUrl;
         try { parsedUrl = new URL(url); } catch(e) {}
 
-        if (parsedUrl && parsedUrl.host === 'localhost') {
+        try {
             const CLIENT_ID = crypto.randomUUID().replace(/-/g, "").slice(0, 10);
             const tunnelUrl = `ws://${TUNNEL_HOST}/vmws/${PROJECT_ID}`
                 + `/${parsedUrl.port || ORIGIN_PORT}/`
@@ -18,9 +18,10 @@
 
             console.debug('[tunnel] Redirecting VM Service WS:', url, '->', tunnelUrl);
             return new OriginalWebSocket(tunnelUrl, protocols);
+        } catch {
+            console.error("There has been an error accessing WebSocket endpoint. Please reload the page since some functionalities may not operate properly.")
+            return new OriginalWebSocket(url, protocols);
         }
-
-        return new OriginalWebSocket(url, protocols);
     };
 
     Object.assign(window.WebSocket, OriginalWebSocket);

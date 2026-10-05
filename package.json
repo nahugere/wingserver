@@ -6,7 +6,10 @@
   "scripts": {
     "build": "npx prisma generate && tsc",
     "dev": "nodemon --env-file=.env --exec tsx src/index.ts",
-    "start": "node dist/src/index.js"
+    "start": "node dist/src/index.js",
+    "test": "vitest run",
+    "test:watch": "vitest",
+    "test:coverage": "vitest run --coverage"
   },
   "keywords": [],
   "author": "",
@@ -20,10 +23,15 @@
     "@types/node": "^25.5.0",
     "@types/pg": "^8.18.0",
     "@types/ws": "^8.18.1",
+    "@vitest/coverage-v8": "^5.0.3",
     "express": "^5.2.1",
+    "ioredis-mock": "^8.13.1",
     "prisma": "^7.5.0",
+    "supertest": "^7.3.1",
     "tsx": "^4.21.0",
-    "typescript": "^5.9.3"
+    "typescript": "^5.9.3",
+    "vite": "^8.3.2",
+    "vitest": "^5.0.3"
   },
   "dependencies": {
     "@prisma/adapter-pg": "^7.5.0",

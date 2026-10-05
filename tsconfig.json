@@ -10,6 +10,5 @@
     "skipLibCheck": true,
   },
   "include": ["src", "generated"],
-  // "include": ["src/**/*.ts", "generated"],
   "exclude": ["node_modules"]
 }
