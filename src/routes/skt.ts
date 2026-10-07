@@ -91,7 +91,7 @@ export function initWS() {
 
                     const modified = html.replace(
                         /<head(\s[^>]*)?>/i,
-                        (m: any) => `${m}<script>window.$dwdsSseHandler='ws://localhost:65026/$dwdsSseHandler'</script><script src="/scripts/ws-proxy.js"></script>`
+                        (m: any) => `${m}<script src="/scripts/ws-proxy.js"></script>`
                     );
                     // res.write(data);
                     writeWithBackpressure(ws, res, Buffer.from(modified));
@@ -138,6 +138,11 @@ export function iniVmWS() {
 
         addVmSession(ws, projectId, role, clientId, params, port)
         const session = vmSessions.get(projectId)
+
+        if (session.get("agent")==null) {
+            ws.send("Local connection has been disconnected")
+            ws.close()
+        }
 
         ws.on("message", (message: any, isBinary: boolean) => {
             if (role === "agent") {
