@@ -1,7 +1,7 @@
 import http from 'http';
 import { WebSocketServer } from 'ws';
 import DevConnections from './services/devConnections.js';
-import { initWS, wss, iniVmWS, wsRoutes } from './routes/skt.js';
+import { initWS, iniVmWS, wsRoutes } from './routes/skt.js';
 import { authenticateSocket } from './services/sessionAuth.js';
 import cookieParser from 'cookie-parser';
 import express, { Application, Request, Response } from 'express';
@@ -14,7 +14,7 @@ import ResponseMap from './services/responseMap.js';
 import path from 'path';
 import siteRoute from './routes/site.js';
 
-const port = process.env.PORT || 8000;
+const port = process.env.PORT || 4000;
 
 const app: Application = express();
 const server = http.createServer(app);

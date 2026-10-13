@@ -6,6 +6,8 @@ import type { Response } from "express";
 import { stringify } from "querystring";
 
 var vmSessions: Map<string, any> = new Map();
+const vmWss = new WebSocketServer({ noServer: true });
+const wss = new WebSocketServer({ noServer: true });
 
 function addVmSession(ws: any, projId: any, role: any, clientId: any = null, params: any, port: any, ) {
     var x = vmSessions.get(projId);
@@ -27,31 +29,25 @@ function addVmSession(ws: any, projId: any, role: any, clientId: any = null, par
         "message": ""
     }))
 }
-
-export const vmWss = new WebSocketServer({ noServer: true });
-export const wss = new WebSocketServer({ noServer: true });
 export const wsRoutes: Record<string, WebSocketServer> = {
     "ws": wss,
     "vmws": vmWss
 };
 
 function writeWithBackpressure(ws: WebSocket, res: Response, data: Buffer) {
-    // if (res.writableEnded || res.destroyed) return;
+    if (res.writableEnded || res.destroyed) return;
 
-    // var ok = res.write(data);
-    // if (ok) return;
+    var ok = res.write(data);
+    if (ok) return;
 
-    // ws.pause()
-    // const release = () => {
-    //     res.off("drain", release);
-    //     res.off("close", release);
-    //     ws.resume()
-    // }
-    // res.once("drain", release);
-    // res.once("close", release);
-    // if (res.writableEnded || res.destroyed) return;
-    res.write(data);
-    // if (res.writableLength > 64 * 1024 * 1024) res.destroy();  
+    ws.pause()
+    const release = () => {
+        res.off("drain", release);
+        res.off("close", release);
+        ws.resume()
+    }
+    res.once("drain", release);
+    res.once("close", release);
 }
 
 export function initWS() {
