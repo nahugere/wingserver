@@ -841,3 +841,64 @@ code {
     gap: 44px;
   }
 }
+
+/* ============================================================
+   Error pages (404 / 500)
+   ============================================================ */
+
+.error-page {
+  align-content: center;
+  padding-bottom: 0;
+}
+
+.error-content {
+  position: relative;
+  z-index: 1;
+  text-align: center;
+}
+
+.error-code {
+  font-family: var(--mono);
+  font-size: clamp(64px, 12vw, 140px);
+  line-height: 1;
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  color: var(--text);
+}
+
+.error-title {
+  margin-top: 20px;
+  font-size: clamp(20px, 3vw, 30px);
+  font-weight: 400;
+  letter-spacing: -0.01em;
+  color: var(--text);
+}
+
+.error-desc {
+  margin-top: 14px;
+  font-size: 14px;
+  line-height: 1.7;
+  color: var(--text-2);
+}
+
+.error-link {
+  display: inline-block;
+  margin-top: 36px;
+  padding: 12px 28px;
+  border: 1px solid var(--border);
+  font-size: 11px;
+  font-weight: 500;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--text-2);
+  transition:
+    border-color 0.2s ease,
+    color 0.2s ease,
+    transform 0.25s ease;
+}
+
+.error-link:hover {
+  border-color: var(--text-3);
+  color: var(--text);
+  transform: translateY(-1px);
+}

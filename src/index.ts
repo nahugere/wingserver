@@ -4,7 +4,7 @@ import DevConnections from './services/devConnections.js';
 import { initWS, iniVmWS, wsRoutes } from './routes/skt.js';
 import { authenticateSocket } from './services/sessionAuth.js';
 import cookieParser from 'cookie-parser';
-import express, { Application, Request, Response } from 'express';
+import express, { Application, NextFunction, Request, Response } from 'express';
 import apiRoute from './routes/api.js';
 import cors from 'cors';
 import morgan from 'morgan';
@@ -110,12 +110,25 @@ app.use( async (req: Request, res: Response) => {
             ResponseMap.removeResponses(mid);
         })
     } catch (e) {
-        res.status(404).send("Page Not Found")
+        if (!res.headersSent) {
+            res.status(404).render("404")
+        }
     } finally {
         res.on("close", () => {
             ResponseMap.removeResponses(mid)
         })
     }
+})
+
+app.use((err: Error, req: Request, res: Response, next: NextFunction) => {
+    console.error(err)
+
+    if (res.headersSent) {
+        next(err)
+        return
+    }
+
+    res.status(500).render("500")
 })
 
 if (process.env.DEBUG) {
