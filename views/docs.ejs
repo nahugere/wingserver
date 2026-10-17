@@ -1,0 +1,231 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>WING | Documentation</title>
+    <meta name="description" content="Wing documentation — install, configure, and use Wing to expose your local development server to the public internet." />
+    <link rel="icon" href="/images/WING.svg" type="image/svg+xml" />
+    <link rel="stylesheet" href="/styles/style.css" />
+    <link rel="stylesheet" href="/styles/docs.css" />
+</head>
+<body>
+
+    <svg xmlns="http://www.w3.org/2000/svg" style="display:none" aria-hidden="true">
+    <symbol id="wing-logo" viewBox="0 0 859 152">
+      <path d="M189.2 5.39999H261.8C259.267 17.1333 256.533 28.7333 253.6 40.2C250.8 51.6667 247.933 63.2 245 74.8C242.067 86.4 239.267 98.1333 236.6 110C233.933 121.733 231.467 133.8 229.2 146.2H144.2L132 71.4C131.867 70.4667 131.467 69.7333 130.8 69.2C130.267 68.5333 129.533 68.1333 128.6 68C127.8 67.7333 126.933 67.7333 126 68C125.2 68.1333 124.467 68.4667 123.8 69C123.267 69.5333 122.867 70.3333 122.6 71.4L110.2 146.2H34.2001C32.4667 136.6 30.5334 127 28.4001 117.4C26.2667 107.667 23.9334 98 21.4001 88.4C19.0001 78.8 16.5334 69.2667 14 59.8C11.4667 50.3333 9.00005 41.0667 6.60005 32C4.20005 22.9333 2.00005 14.0667 4.95911e-05 5.39999H71.6001C72.0001 12.0667 72.5334 18.8667 73.2001 25.8C74.0001 32.6 74.8667 39.4667 75.8001 46.4C76.8667 53.2 78.0001 59.9333 79.2001 66.6C80.4001 73.2667 81.6001 79.7333 82.8001 86C83.4667 87.2 84.2667 88 85.2001 88.4C86.2667 88.6667 87.2667 88.8 88.2001 88.8C89.1334 88.6667 89.9334 88.4 90.6001 88C91.2667 87.6 91.6667 87.2 91.8 86.8L104 5.39999H157.8L169.8 86.4C169.933 86.8 170.333 87.2 171 87.6C171.667 88 172.467 88.3333 173.4 88.6C174.333 88.7333 175.333 88.7333 176.4 88.6C177.467 88.4667 178.467 88.1333 179.4 87.6C180.333 87.0667 181.067 86.2667 181.6 85.2C182.267 84 182.533 82.5333 182.4 80.8C183.867 67.7333 185.133 54.9333 186.2 42.4C187.267 29.8667 188.267 17.5333 189.2 5.39999ZM277.134 146.2C277.001 137.533 276.934 128.733 276.934 119.8C277.068 110.867 277.268 101.8 277.534 92.6C277.934 83.4 278.201 74.2 278.334 65C278.601 55.6667 278.734 46.3333 278.734 37C278.734 31.6667 278.734 26.4 278.734 21.2C278.734 15.8667 278.668 10.6 278.534 5.39999H349.734C349.201 18.2 348.868 30.7333 348.734 43C348.601 55.1333 348.534 67.0667 348.534 78.8C348.534 87.2 348.734 95.2667 349.134 103C349.534 110.733 350.001 118.2 350.534 125.4C351.068 132.467 351.534 139.4 351.934 146.2H277.134ZM486.164 5.39999H552.564C552.697 9.93333 552.564 14.5333 552.164 19.2C551.897 23.7333 551.431 28.3333 550.764 33C550.231 37.5333 549.631 42.2 548.964 47C548.431 51.6667 547.964 56.4667 547.564 61.4C547.164 66.3333 546.964 71.4 546.964 76.6C546.964 87.8 547.297 99.2 547.964 110.8C548.764 122.267 550.031 134.067 551.764 146.2H468.564L443.764 75.6C443.631 75.2 443.231 74.8667 442.564 74.6C441.897 74.3333 441.164 74.2 440.364 74.2C439.564 74.2 438.764 74.4 437.964 74.8C437.164 75.2 436.497 75.8667 435.964 76.8C435.431 77.6 435.164 78.7333 435.164 80.2C435.164 90.4667 435.297 101.333 435.564 112.8C435.964 124.133 436.631 135.267 437.564 146.2H367.964C367.964 137.533 368.164 128.733 368.564 119.8C369.097 110.733 369.697 101.6 370.364 92.4C371.031 83.0667 371.697 73.6667 372.364 64.2C373.031 54.7333 373.564 45.1333 373.964 35.4C374.364 25.5333 374.497 15.5333 374.364 5.39999H450.164L478.564 87.8C478.831 88.3333 479.231 88.8 479.764 89.2C480.297 89.4667 480.897 89.6667 481.564 89.8C482.364 89.8 483.097 89.6667 483.764 89.4C484.431 89.1333 484.964 88.6667 485.364 88C485.897 87.3333 486.164 86.4667 486.164 85.4V5.39999ZM671.889 -1.09673e-05C693.489 -1.09673e-05 711.622 2.53333 726.289 7.6C740.956 12.5333 752.489 19.4 760.889 28.2C769.289 37 774.756 47.1333 777.289 58.6L701.489 76C702.822 70.1333 702.489 65.2667 700.489 61.4C698.622 57.4 695.289 54.4 690.489 52.4C685.689 50.2667 679.422 49.2 671.689 49.2C664.222 49.2 658.222 50.2 653.689 52.2C649.289 54.0667 646.156 56.7333 644.289 60.2C642.422 63.6667 641.489 67.6 641.489 72C641.489 75.3333 642.156 78.4 643.489 81.2C644.822 83.8667 646.756 86.1333 649.289 88C651.956 89.7333 655.089 91.1333 658.689 92.2C662.289 93.1333 666.289 93.6 670.689 93.6C676.556 93.6 681.222 92.9333 684.689 91.6C688.289 90.2667 690.956 88.4 692.689 86C690.822 92.5333 688.689 99.4 686.289 106.6C684.022 113.667 681.689 120.867 679.289 128.2C677.022 135.4 674.822 142.533 672.689 149.6C669.756 150.133 666.956 150.533 664.289 150.8C661.622 151.067 658.356 151.2 654.489 151.2C644.889 151.2 636.289 150.2 628.689 148.2C621.089 146.2 614.356 143.467 608.489 140C602.756 136.4 597.822 132.267 593.689 127.6C589.556 122.8 586.089 117.533 583.289 111.8C580.489 105.933 578.222 99.8 576.489 93.4C574.889 87 573.756 80.4667 573.089 73.8C572.689 68.4667 572.689 63.2 573.089 58C573.489 52.8 574.556 47.8 576.289 43C578.022 38.2 580.489 33.6667 583.689 29.4C586.889 25 591.022 21 596.089 17.4C601.156 13.8 607.222 10.7333 614.289 8.19999C621.356 5.53333 629.622 3.53333 639.089 2.2C648.689 0.733325 659.622 -1.09673e-05 671.889 -1.09673e-05ZM699.089 146.2C699.089 138.867 699.089 131.667 699.089 124.6C699.089 117.4 699.089 110.467 699.089 103.8C699.089 97 699.089 90.6 699.089 84.6C706.956 85.4 715.089 86.2 723.489 87C732.022 87.6667 740.689 88.2667 749.489 88.8C758.289 89.2 767.089 89.4667 775.889 89.6V146.2H699.089ZM795.103 146.2V99.6H858.303V146.2H795.103Z" fill="#f5f5f5" />
+    </symbol>
+  </svg>
+
+  <header class="docs-navbar">
+    <nav class="docs-nav" aria-label="Documentation">
+      <button class="docs-menu-toggle" id="docs-menu-toggle" type="button" aria-label="Toggle navigation">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><path d="M4 7h16M4 12h16M4 17h16" /></svg>
+      </button>
+      <a class="docs-nav-logo" href="/" aria-label="WING. home">
+        <svg role="img" aria-label="WING." viewBox="0 0 859 152"><use href="#wing-logo" /></svg>
+      </a>
+      <div class="docs-search">
+        <input type="search" id="docs-search-input" placeholder="Search documentation" aria-label="Search documentation" autocomplete="off" />
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><circle cx="11" cy="11" r="7" /><path d="m20 20-3.5-3.5" /></svg>
+      </div>
+      <div class="docs-nav-links">
+        <a class="nav-link" href="https://github.com/nahugere/wing" target="_blank" rel="noopener">[ GitHub ]</a>
+        <a class="nav-link" href="/#hero">[ Get Started ]</a>
+      </div>
+    </nav>
+  </header>
+
+  <div class="docs-layout">
+    <aside class="docs-sidebar" id="docs-sidebar" aria-label="Documentation navigation">
+      <nav class="docs-nav-tree">
+        <a class="docs-nav-item" href="#introduction">Introduction</a>
+        <div class="docs-nav-group">
+          <button class="docs-nav-item docs-nav-parent" type="button" aria-expanded="true">
+            <span>CLI Client</span>
+            <svg class="chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="m6 9 6 6 6-6" /></svg>
+          </button>
+          <div class="docs-nav-children">
+            <a class="docs-nav-item" href="#overview">Overview</a>
+            <a class="docs-nav-item" href="#installing">Installing</a>
+            <a class="docs-nav-item" href="#updating">Updating</a>
+            <a class="docs-nav-item" href="#uninstalling">Uninstalling</a>
+            <a class="docs-nav-item" href="#usage">Usage</a>
+            <a class="docs-nav-item" href="#flutter-support">Flutter Support</a>
+          </div>
+        </div>
+        <a class="docs-nav-item" href="#contribution">Contribution &amp; Support</a>
+      </nav>
+    </aside>
+
+    <main class="docs-content">
+      <section id="introduction">
+        <h1>Introduction</h1>
+        <p>Wing is a Python CLI tool that exposes a local development server to the public internet through a shareable URL. It is designed to be simple to use, with no additional configuration required for typical workflows.</p>
+        <p>Wing supports forwarding both HTTP and WebSocket traffic out of the box.</p>
+      </section>
+
+      <section id="cli-client">
+        <h1>CLI Client</h1>
+
+        <h2 id="overview">Overview</h2>
+        <p>Wing's CLI client connects your development machine to the central relay. It forwards incoming requests to your local server and sends the server's responses back through the relay to the requesting client.</p>
+        <p>The client is written in Python and requires Python 3.9 or later.</p>
+
+        <h2 id="installing">Installing</h2>
+        <p>Wing supports <strong>Windows, macOS, and Linux.</strong> Install it using the public installation script:</p>
+        <div class="code-block">
+          <button class="copy-btn" type="button" aria-label="Copy code">
+            <svg class="icon-copy" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><rect x="9" y="9" width="11" height="11" rx="2" /><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1" /></svg>
+            <svg class="icon-check" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="m20 6-11 11-5-5" /></svg>
+          </button>
+          <pre><code><span class="prompt">$ </span>curl -fsSL https://wingserver.vercel.app/install.sh | bash</code></pre>
+        </div>
+        <p>To verify the installation, run:</p>
+        <div class="code-block">
+          <button class="copy-btn" type="button" aria-label="Copy code">
+            <svg class="icon-copy" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><rect x="9" y="9" width="11" height="11" rx="2" /><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1" /></svg>
+            <svg class="icon-check" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="m20 6-11 11-5-5" /></svg>
+          </button>
+          <pre><code><span class="prompt">$ </span>wing --version</code></pre>
+        </div>
+        <p>The installer creates a dedicated Python virtual environment, installs Wing and its dependencies, and configures the <code>wing</code> command.</p>
+        <p>If the command is not recognized after installation, restart your terminal or ensure that <code>~/.local/bin</code> is included in your <code>PATH</code>.</p>
+        <p>For <strong>Windows</strong>, clone the repository to your machine. To run wing, you'll need to install the required packages which are specified under <code>requirements.txt</code>. To install the packages run:</p>
+        <div class="code-block">
+          <button class="copy-btn" type="button" aria-label="Copy code">
+            <svg class="icon-copy" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><rect x="9" y="9" width="11" height="11" rx="2" /><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1" /></svg>
+            <svg class="icon-check" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="m20 6-11 11-5-5" /></svg>
+          </button>
+          <pre><code><span class="prompt">$ </span>pip install -r requirements.txt</code></pre>
+        </div>
+        <p>After installing the required packages, to start using wing, run:</p>
+        <div class="code-block">
+          <button class="copy-btn" type="button" aria-label="Copy code">
+            <svg class="icon-copy" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><rect x="9" y="9" width="11" height="11" rx="2" /><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1" /></svg>
+            <svg class="icon-check" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="m20 6-11 11-5-5" /></svg>
+          </button>
+          <pre><code><span class="prompt">$ </span>pip install -e .</code></pre>
+        </div>
+        <p>You can verify installation by running:</p>
+        <div class="code-block">
+          <button class="copy-btn" type="button" aria-label="Copy code">
+            <svg class="icon-copy" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><rect x="9" y="9" width="11" height="11" rx="2" /><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1" /></svg>
+            <svg class="icon-check" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="m20 6-11 11-5-5" /></svg>
+          </button>
+          <pre><code><span class="prompt">$ </span>wing --version</code></pre>
+        </div>
+        <p>or</p>
+        <div class="code-block">
+          <button class="copy-btn" type="button" aria-label="Copy code">
+            <svg class="icon-copy" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><rect x="9" y="9" width="11" height="11" rx="2" /><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1" /></svg>
+            <svg class="icon-check" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="m20 6-11 11-5-5" /></svg>
+          </button>
+          <pre><code><span class="prompt">$ </span>python -m wing --version</code></pre>
+        </div>
+
+        <h2 id="updating">Updating</h2>
+        <p>Updating Wing installs the latest release from GitHub. Run:</p>
+        <div class="code-block">
+          <button class="copy-btn" type="button" aria-label="Copy code">
+            <svg class="icon-copy" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><rect x="9" y="9" width="11" height="11" rx="2" /><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1" /></svg>
+            <svg class="icon-check" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="m20 6-11 11-5-5" /></svg>
+          </button>
+          <pre><code><span class="prompt">$ </span>curl -fsSL https://wingserver.vercel.app/install.sh | bash -s -- --update</code></pre>
+        </div>
+
+        <h2 id="uninstalling">Uninstalling</h2>
+        <p>Uninstalling Wing removes its installed files, virtual environment, and command launcher. Any manual changes to your shell configuration may need to be removed separately.</p>
+        <p>Run:</p>
+        <div class="code-block">
+          <button class="copy-btn" type="button" aria-label="Copy code">
+            <svg class="icon-copy" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><rect x="9" y="9" width="11" height="11" rx="2" /><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1" /></svg>
+            <svg class="icon-check" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="m20 6-11 11-5-5" /></svg>
+          </button>
+          <pre><code><span class="prompt">$ </span>curl -fsSL https://wingserver.vercel.app/install.sh | bash -s -- --uninstall</code></pre>
+        </div>
+
+        <h2 id="usage">Usage</h2>
+        <p>Wing can be started from any working directory. Flutter mode is an exception because it requires the path to a Flutter project.</p>
+        <p>Use the <code>start</code> command followed by the port you want Wing to expose:</p>
+        <div class="code-block">
+          <button class="copy-btn" type="button" aria-label="Copy code">
+            <svg class="icon-copy" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><rect x="9" y="9" width="11" height="11" rx="2" /><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1" /></svg>
+            <svg class="icon-check" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="m20 6-11 11-5-5" /></svg>
+          </button>
+          <pre><code><span class="prompt">$ </span>wing start &lt;port-number&gt;</code></pre>
+        </div>
+        <p>For example:</p>
+        <div class="code-block">
+          <button class="copy-btn" type="button" aria-label="Copy code">
+            <svg class="icon-copy" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><rect x="9" y="9" width="11" height="11" rx="2" /><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1" /></svg>
+            <svg class="icon-check" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="m20 6-11 11-5-5" /></svg>
+          </button>
+          <pre><code><span class="prompt">$ </span>wing start 8324</code></pre>
+        </div>
+        <p>This exposes port <code>8324</code> for external connections. Wing provides a generated URL that can be shared to access the service over the internet.</p>
+
+        <h2 id="flutter-support">Flutter Support</h2>
+        <p>Wing includes a Flutter-specific mode for previewing Flutter applications. It builds a web version of your Flutter app, so make sure your project is configured to support Flutter web builds.</p>
+        <p>See the <a href="https://docs.flutter.dev/platform-integration/web/building" target="_blank" rel="noopener">official Flutter web build documentation</a> for instructions.</p>
+        <p>To run Flutter mode, use:</p>
+        <div class="code-block">
+          <button class="copy-btn" type="button" aria-label="Copy code">
+            <svg class="icon-copy" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><rect x="9" y="9" width="11" height="11" rx="2" /><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1" /></svg>
+            <svg class="icon-check" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="m20 6-11 11-5-5" /></svg>
+          </button>
+          <pre><code><span class="prompt">$ </span>wing start -f &lt;path-to-your-flutter-project&gt;</code></pre>
+        </div>
+        <p>You can specify the path to your Flutter project or use <code>.</code> to reference the current directory. For example, if you're already in your Flutter project's directory, run:</p>
+        <div class="code-block">
+          <button class="copy-btn" type="button" aria-label="Copy code">
+            <svg class="icon-copy" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><rect x="9" y="9" width="11" height="11" rx="2" /><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1" /></svg>
+            <svg class="icon-check" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="m20 6-11 11-5-5" /></svg>
+          </button>
+          <pre><code><span class="prompt">$ </span>wing start -f .</code></pre>
+        </div>
+        <p>In Flutter mode, Wing automatically runs a Flutter build command from your project and serves the project through a web server on port <code>8374</code>.</p>
+        <p><strong>Note:</strong> Support for hot reloading is currently under development.</p>
+      </section>
+
+      <section id="contribution">
+        <h1>Contribution and Support</h1>
+        <p>Wing is an open-source project. Feel free to contribute to its development, use it, or modify it to fit your needs.</p>
+        <p>If you encounter a bug, have questions about Wing's functionality, or simply want to get in touch, email <a href="mailto:gerenahu1@gmail.com">gerenahu1@gmail.com</a>.</p>
+        <p>You can also open an issue in the <a href="https://github.com/nahugere/wing" target="_blank" rel="noopener">Wing GitHub repository</a>. When reporting a bug, please include a clear description and detailed steps to reproduce it.</p>
+      </section>
+
+    </main>
+  </div>
+
+  <!-- Footer -->
+  <footer class="footer docs-footer">
+    <div class="container footer-grid">
+      <div class="footer-left">
+        <a href="/" aria-label="WING. home">
+          <svg class="footer-logo" role="img" aria-label="WING." viewBox="0 0 859 152"><use href="#wing-logo" /></svg>
+        </a>
+        <p class="footer-made">Made with ♡ by Nahu Gere</p>
+      </div>
+      <div class="footer-right">
+        <div class="footer-cols">
+          <div class="footer-col">
+            <h4>Links</h4>
+            <a href="/docs">[ Documentation ]</a>
+            <a href="/#how">[ How It Works ]</a>
+            <a href="/#hero">[ Get Started ]</a>
+          </div>
+          <div class="footer-col">
+            <h4>Contact</h4>
+            <a href="mailto:gerenahu1@gmail.com">[ Email ]</a>
+            <a href="https://www.github.com/nahugere">[ GitHub ]</a>
+            <a href="https://instagram.com/nahu_gere">[ Instagram ]</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <script src="scripts/docs.js"></script>
+</body>
+</html>

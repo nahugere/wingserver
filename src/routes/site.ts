@@ -28,4 +28,8 @@ siteRoute.get("/", (req: Request, res: Response) => {
     res.render("index")
 })
 
+siteRoute.get("/docs", (req: Request, res: Response) => {
+    res.render("docs")
+})
+
 export default siteRoute;
